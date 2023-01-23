@@ -8,7 +8,7 @@ import ApiProvider from './context/ApiProvider';
 function App() {
   return (
     <div>
-      {/* <Header /> */}
+      <span>Star Wars Project</span>
       <ApiProvider>
         <Table />
       </ApiProvider>

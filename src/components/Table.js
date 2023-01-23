@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import ApiContext from '../context/ApiContext';
 
 function Table() {
   const { apiData } = useContext(ApiContext);
+  const [textFilter, setTextFilter] = useState('');
   apiData.forEach((planet) => delete planet.residents);
-  console.log(apiData);
 
-  const tableData = apiData.map((planet) => (
+  const nameFilter = apiData.filter((letter) => letter.name.includes(textFilter));
+
+  const tableData = nameFilter.map((planet) => (
     <tr key={ planet.name }>
       <td>{ planet.name }</td>
       <td>{ planet.rotation_period }</td>
@@ -26,6 +28,15 @@ function Table() {
 
   return (
     <div>
+      <input
+        className="name-filter"
+        type="text"
+        data-testid="name-filter"
+        name="name"
+        id="name-filter"
+        value={ textFilter.name }
+        onChange={ (e) => setTextFilter(e.target.value) }
+      />
       <table className="table-edit">
         <thead>
           <tr>
