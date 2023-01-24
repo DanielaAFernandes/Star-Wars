@@ -8,7 +8,9 @@ const comparisonOptions = [
 ];
 
 function Inputs() {
-  const { filterNumericInput, handleChangeNumeric } = useContext(ApiContext);
+  const { filterNumericInput, handleChangeNumeric,
+    handleSubmit } = useContext(ApiContext);
+  console.log(filterNumericInput.column);
 
   return (
     <div>
@@ -68,12 +70,15 @@ function Inputs() {
         onChange={ handleChangeNumeric }
       />
       <button
-        type="button"
+        type="submit"
         data-testid="button-filter"
-        // onClick={ handleSubmit }
+        onClick={ handleSubmit }
       >
         Filtrar
       </button>
+      <span className="span-message">
+        { filterNumericInput.column }
+      </span>
     </div>
   );
 }

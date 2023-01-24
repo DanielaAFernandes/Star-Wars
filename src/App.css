@@ -46,6 +46,12 @@ body {
   text-align: center;
 }
 
+.span-message {
+  background-color: aliceblue;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
 .table-edit {
   color: white;
   font-size: 25px;
