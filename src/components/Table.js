@@ -1,15 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import ApiContext from '../context/ApiContext';
 
 function Table() {
-  const { apiData } = useContext(ApiContext);
-  const [textFilter, setTextFilter] = useState('');
-  apiData.forEach((planet) => delete planet.residents);
-
-  const nameFilter = apiData.filter((letter) => letter.name.includes(textFilter));
-
+  const { nameFilter, nameTyped, handleChange } = useContext(ApiContext);
   const tableData = nameFilter.map((planet) => (
-    <tr key={ planet.name }>
+    <tr key={ planet.name } className="planets-data">
       <td>{ planet.name }</td>
       <td>{ planet.rotation_period }</td>
       <td>{ planet.orbital_period }</td>
@@ -19,7 +14,7 @@ function Table() {
       <td>{ planet.terrain }</td>
       <td>{ planet.surface_water }</td>
       <td>{ planet.population }</td>
-      <td>{ planet.films }</td>
+      <td className="films">{ planet.films }</td>
       <td>{ planet.created }</td>
       <td>{ planet.edited }</td>
       <td>{ planet.url}</td>
@@ -31,11 +26,12 @@ function Table() {
       <input
         className="name-filter"
         type="text"
+        placeholder="Digite o nome do planeta"
         data-testid="name-filter"
         name="name"
         id="name-filter"
-        value={ textFilter.name }
-        onChange={ (e) => setTextFilter(e.target.value) }
+        value={ nameTyped.name }
+        onChange={ handleChange }
       />
       <table className="table-edit">
         <thead>
@@ -55,7 +51,7 @@ function Table() {
             <th className="table-items">Url</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="table-body">
           {tableData}
         </tbody>
       </table>

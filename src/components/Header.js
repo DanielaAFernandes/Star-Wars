@@ -1,21 +1,11 @@
-// import React, { useContext } from 'react';
-// import TextFilterContext from '../context/ApiContext';
+import React from 'react';
 
-// function Header() {
-//   return (
-//     <div>
-//       <span className="title">Star Wars Project</span>
-//       <input
-//         className="name-filter"
-//         type="text"
-//         data-testid="name-filter"
-//         name="nameFilter"
-//         id="name-filter"
-//         // onChange={ this.handleChange }
-//         value={ nameFilter }
-//       />
-//     </div>
-//   );
-// }
+function Header() {
+  return (
+    <div className="header">
+      <span className="title">Star Wars Project</span>
+    </div>
+  );
+}
 
-// export default Header;
+export default Header;

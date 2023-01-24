@@ -1,15 +1,16 @@
 import React from 'react';
-// import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Table from './components/Table';
 import ApiProvider from './context/ApiProvider';
-// import Header from './components/Header';
+import Header from './components/Header';
+import Inputs from './components/Inputs';
 
 function App() {
   return (
     <div>
-      <span>Star Wars Project</span>
       <ApiProvider>
+        <Header />
+        <Inputs />
         <Table />
       </ApiProvider>
     </div>

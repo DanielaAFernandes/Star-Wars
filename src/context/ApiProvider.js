@@ -4,7 +4,13 @@ import ApiContext from './ApiContext';
 
 export default function ApiProvider({ children }) {
   const [apiData, setApiData] = useState([]);
-  // const [textFilter, setTextFilter] = useState('');
+  const [filter, setFilter] = useState({
+    filters: {
+      textFilter: { name: '' },
+      filterNumericValues: [],
+    },
+  });
+  console.log(filter.filters.textFilter);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -15,36 +21,76 @@ export default function ApiProvider({ children }) {
     fetchApi();
   }, []);
 
-  // const setFilter = apiData.filter((letter) => letter.name.includes(textFilter));
-  // console.log(setFilter[0].name);
+  apiData.forEach((planet) => delete planet.residents);
 
-  // const setFilter = () => {
-  //   setApiData({
-  //     ...apiData.filter((letter) => letter.name.startsWith(letter.toUpperCase()))
-  //       .map((letter) => letter.name),
-  //   });
-  //   return apiData;
-  // };
-  // console.log(Object.values(apiData.name));
+  const nameTyped = filter.filters.textFilter;
+  const nameFilter = apiData.filter((p) => p.name.includes(nameTyped.name));
 
-  // const handleChange = (event) => {
+  const handleChange = ({ target: { name, value } }) => {
+    setFilter({
+      ...nameTyped,
+      [name]: value,
+    });
+    console.log(filter.filters.textFilter);
+  };
+
+  // const [textFilter, setTextFilter] = useState({
+  //   name: '',
+  // });
+  const [filterNumericInput, setfilterNumericInput] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
+
+  // let dataFilters = apiData;
+
+  // const nameFilter = apiData.filter((p) => p.name.includes(textFilter.name));
+
+  // const handleChange = ({ target: { name, value } }) => {
   //   setTextFilter({
   //     ...textFilter,
-  //     [event.target.name]: event.target.value,
+  //     [name]: value,
   //   });
-  //   setFilter();
   // };
+
+  const handleChangeNumeric = ({ target: { name, value } }) => {
+    setfilterNumericInput({
+      ...filterNumericInput,
+      [name]: value,
+    });
+  };
+
+  // filterNumericInput.forEach(({ comparison, column, value }) => {
+  //   switch (comparison) {
+  //   case 'maior que':
+  //     dataFilters = apiData
+  //       .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
+  //     break;
+  //   case 'menor que':
+  //     dataFilters = apiData
+  //       .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
+  //     break;
+  //   case 'igual a':
+  //     dataFilters = apiData
+  //       .filter((planet) => planet[column] === value);
+  //     break;
+  //   default:
+  //     return dataFilters;
+  //   }
+  // });
+
   return (
-    <ApiContext.Provider value={ { apiData } }>
-      {/* <input
-        className="name-filter"
-        type="text"
-        data-testid="name-filter"
-        name="nameFilter"
-        id="name-filter"
-        // value={ textFilter.name }
-        // onChange={ handleChange }
-      /> */}
+    <ApiContext.Provider
+      value={ { nameFilter,
+        filter,
+        // textFilter,
+        nameTyped,
+        handleChange,
+        filterNumericInput,
+        handleChangeNumeric,
+      } }
+    >
       { children }
     </ApiContext.Provider>
   );

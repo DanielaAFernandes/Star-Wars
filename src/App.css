@@ -2,16 +2,63 @@ body {
   background-color: rgb(4, 4, 66);
 }
 
+.column-filter {
+  background-color: orangered;
+  color: white;
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+.comparison {
+  background-color: orangered;
+  color: white;
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+.films {
+  font-size: 10px;
+}
+
+.header {
+  background-color: rgba(97, 17, 167, 0.493);
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.name-filter {
+  border: 3px orangered solid;
+}
+
+.number-input {
+  background-color: orangered;
+  color: white;
+  font-size: 15px;
+  margin-right: 5px;
+  width: 50px;
+}
+
+.planets-data {
+  font-size: 15px;
+  text-align: center;
+}
+
 .table-edit {
   color: white;
   font-size: 25px;
 }
 
 .table-items {
-  padding-left: 45px;
+  padding-left: 15px;
 }
 
 .title {
-  background-color: black;
+  color: aliceblue;
+  font-size: 50px;
+  text-align: center;
 }
+
 
