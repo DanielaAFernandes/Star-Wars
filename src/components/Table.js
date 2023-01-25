@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ApiContext from '../context/ApiContext';
 
 function Table() {
-  const { nameFilter, nameTyped, handleChange } = useContext(ApiContext);
+  const { nameFilter } = useContext(ApiContext);
   const tableData = nameFilter.map((planet) => (
     <tr key={ planet.name } className="planets-data">
       <td>{ planet.name }</td>
@@ -23,16 +23,6 @@ function Table() {
 
   return (
     <div>
-      <input
-        className="name-filter"
-        type="text"
-        placeholder="Digite o nome do planeta"
-        data-testid="name-filter"
-        name="name"
-        id="name-filter"
-        value={ nameTyped.name }
-        onChange={ handleChange }
-      />
       <table className="table-edit">
         <thead>
           <tr>

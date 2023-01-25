@@ -4,20 +4,18 @@ import ApiContext from './ApiContext';
 
 export default function ApiProvider({ children }) {
   const [apiData, setApiData] = useState([]);
-  const [filter, setFilter] = useState({
-    filters: {
-      textFilter: { name: '' },
-    },
-  });
+  // const [queryData, setQueryData] = useState([]);
   const [filterNumericInput, setfilterNumericInput] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
-
-  const [filterNumericValues, setFilterNumericValues] = useState([]);
-
-  // const [filteredApiData, setFilteredApiData] = useState([]);
+  const [filter, setFilter] = useState({
+    filters: {
+      textFilter: { name: '' },
+      numericFilter: [],
+    },
+  });
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -29,7 +27,6 @@ export default function ApiProvider({ children }) {
   }, []);
 
   apiData.forEach((planet) => delete planet.residents);
-
   const nameTyped = filter.filters.textFilter;
   const nameFilter = apiData.filter((p) => p.name.includes(nameTyped.name));
 
@@ -50,47 +47,20 @@ export default function ApiProvider({ children }) {
     });
   };
 
-  const valueFilters = () => {
-    let dataFilters = apiData;
-    filterNumericValues.forEach(({ comparison, column, value }) => {
-      switch (comparison) {
-      case 'maior que':
-        dataFilters = dataFilters
-          .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
-        break;
-      case 'menor que':
-        dataFilters = dataFilters
-          .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
-        break;
-      case 'igual a':
-        dataFilters = dataFilters
-          .filter((planet) => planet[column] === value);
-        break;
-      default:
-        return dataFilters;
-      }
-    });
-    // setFilteredApiData(dataFilters);
-  };
-
-  useEffect(() => { valueFilters(); }, [filterNumericInput]);
-
-  const handleSubmit = () => {
-    setFilterNumericValues([
-      filterNumericInput,
-    ]);
-    console.log('por favor me le');
-  };
-
   return (
     <ApiContext.Provider
-      value={ { nameFilter,
+      value={ {
+        apiData,
+        setApiData,
+        // setTextFilter,
+        filterNumericInput,
+        setfilterNumericInput,
+        handleChangeNumeric,
+        handleChange,
+        setFilter,
         filter,
         nameTyped,
-        handleChange,
-        filterNumericInput,
-        handleChangeNumeric,
-        handleSubmit,
+        nameFilter,
       } }
     >
       { children }
