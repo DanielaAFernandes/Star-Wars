@@ -5,11 +5,11 @@ import ApiContext from './ApiContext';
 export default function ApiProvider({ children }) {
   const [apiData, setApiData] = useState([]);
   // const [queryData, setQueryData] = useState([]);
-  const [filterNumericInput, setfilterNumericInput] = useState({
+  const [filterNumericInput, setfilterNumericInput] = useState([{
     column: 'population',
     comparison: 'maior que',
     value: 0,
-  });
+  }]);
   const [filter, setFilter] = useState({
     filters: {
       textFilter: { name: '' },
@@ -40,12 +40,12 @@ export default function ApiProvider({ children }) {
     });
   };
 
-  const handleChangeNumeric = ({ target: { name, value } }) => {
-    setfilterNumericInput({
-      ...filterNumericInput,
-      [name]: value,
-    });
-  };
+  // const handleChangeNumeric = ({ target: { name, value } }) => {
+  //   setfilterNumericInput({
+  //     ...filterNumericInput,
+  //     [name]: value,
+  //   });
+  // };
 
   return (
     <ApiContext.Provider
@@ -55,7 +55,6 @@ export default function ApiProvider({ children }) {
         // setTextFilter,
         filterNumericInput,
         setfilterNumericInput,
-        handleChangeNumeric,
         handleChange,
         setFilter,
         filter,

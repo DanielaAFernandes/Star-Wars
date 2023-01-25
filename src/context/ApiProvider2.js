@@ -2,105 +2,91 @@
 // import PropTypes from 'prop-types';
 // import ApiContext from './ApiContext';
 
-// export default function ApiProvider({ children }) {
+// function ApiProvider2({ children }) {
 //   const [apiData, setApiData] = useState([]);
-//   const [filter, setFilter] = useState({
-//     filters: {
-//       textFilter: { name: '' },
-//     },
-//   });
-//   const [filterNumericInput, setfilterNumericInput] = useState({
-//     column: 'population',
-//     comparison: 'maior que',
-//     value: 0,
-//   });
-
-//   const [filterNumericValues, setFilterNumericValues] = useState([]);
-
-//   // const [filteredApiData, setFilteredApiData] = useState([]);
+//   const [apiQuery, setApiQuery] = useState([]);
+//   const [colunmsSearch, setColunmsSearch] = useState('population');
+//   const [operator, setOperator] = useState('maior que');
+//   const [numberValue, setNumberValue] = useState(0);
 
 //   useEffect(() => {
 //     const fetchApi = async () => {
 //       const response = await fetch('https://swapi.dev/api/planets');
 //       const data = await response.json();
 //       setApiData(data.results);
+//       setApiQuery(data.results);
 //     };
 //     fetchApi();
 //   }, []);
 
-//   apiData.forEach((planet) => delete planet.residents);
-
-//   const nameTyped = filter.filters.textFilter;
-//   const nameFilter = apiData.filter((p) => p.name.includes(nameTyped.name));
-
-//   const handleChange = ({ target: { name, value } }) => {
-//     setFilter({
-//       ...filter,
-//       filters: {
-//         textFilter: { name: value },
-//       },
-//       [name]: value,
-//     });
+//   const handleFilterName = (name) => {
+//     const filterApi = apiData
+//       .filter((element) => element.name.toLowerCase().includes(name.toLowerCase()));
+//     setApiQuery(filterApi);
 //   };
 
-//   const handleChangeNumeric = ({ target: { name, value } }) => {
-//     setfilterNumericInput({
-//       ...filterNumericInput,
-//       [name]: value,
-//     });
+//   const handleColunmsSearch = (value) => {
+//     setColunmsSearch(value);
 //   };
 
-//   const valueFilters = () => {
-//     let dataFilters = apiData;
-//     filterNumericValues.forEach(({ comparison, column, value }) => {
-//       switch (comparison) {
-//       case 'maior que':
-//         dataFilters = dataFilters
-//           .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
-//         break;
-//       case 'menor que':
-//         dataFilters = dataFilters
-//           .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
-//         break;
-//       case 'igual a':
-//         dataFilters = dataFilters
-//           .filter((planet) => planet[column] === value);
-//         break;
-//       default:
-//         return dataFilters;
-//       }
-//     });
-//     // setFilteredApiData(dataFilters);
+//   const handleOperatorSearch = (value) => {
+//     setOperator(value);
 //   };
 
-//   useEffect(() => { valueFilters(); }, [filterNumericInput]);
+//   const handleNumberValueSearch = (value) => {
+//     setNumberValue(value);
+//   };
 
-//   const handleSubmit = () => {
-//     setFilterNumericValues([
-//       filterNumericInput,
-//     ]);
-//     console.log('por favor me le');
+//   const handleFilterClick = () => {
+//     switch (operator) {
+//     case 'maior que': {
+//       const biggerFilter = apiQuery.filter((planet) => (
+//         Number(planet[colunmsSearch]) > numberValue
+//       ));
+//       setApiQuery(biggerFilter);
+//       break;
+//     }
+//     case 'menor que': {
+//       const smallerFilter = apiQuery.filter((planet) => (
+//         Number(planet[colunmsSearch]) < numberValue
+//       ));
+//       setApiQuery(smallerFilter);
+//       break;
+//     }
+//     case 'igual a': {
+//       const equalFilter = apiQuery.filter((planet) => (
+//         Number(planet[colunmsSearch]) === Number(numberValue)
+//       ));
+//       setApiQuery(equalFilter);
+//       break;
+//     }
+//     default:
+//       break;
+//     }
+//   };
+
+//   const values = {
+//     apiData,
+//     apiQuery,
+//     handleFilterName,
+//     colunmsSearch,
+//     handleColunmsSearch,
+//     operator,
+//     handleOperatorSearch,
+//     numberValue,
+//     handleNumberValueSearch,
+//     handleFilterClick,
 //   };
 
 //   return (
-//     <ApiContext.Provider
-//       value={ { nameFilter,
-//         filter,
-//         nameTyped,
-//         handleChange,
-//         filterNumericInput,
-//         handleChangeNumeric,
-//         handleSubmit,
-//       } }
-//     >
+//     <ApiContext.Provider value={ values }>
 //       { children }
 //     </ApiContext.Provider>
 //   );
 // }
 
-// ApiProvider.propTypes = {
-//   children: PropTypes.oneOfType([
-//     PropTypes.arrayOf(PropTypes.node),
-//     PropTypes.node,
-//   ]).isRequired,
-// };
+// ApiProvider2.propTypes = {
+//   children: PropTypes.node,
+// }.isRequired;
+
+// export default ApiProvider2;

@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import ApiContext from '../context/ApiContext';
 
 function Inputs() {
-  const { handleChangeNumeric, handleChange,
+  const { handleChange,
     filterNumericInput, nameFilter, nameTyped,
     setfilterNumericInput } = useContext(ApiContext);
-  console.log(filterNumericInput);
+  const [comparisonFilter, setComparisonFilter] = useState('maior que');
+  const [columnFilter, setColumnFilter] = useState('population');
+  const [valueFilter, setValueFilter] = useState(0);
 
   const comparisonOptions = [
     { name: 'maior que', value: 'maior que' },
@@ -13,40 +15,43 @@ function Inputs() {
     { name: 'igual a', value: 'igual a' },
   ];
 
-  let dataFilters = [...nameFilter];
-  console.log(dataFilters);
-
-  const combinedFilter = Object.values(filterNumericInput);
-
-  const valueFilters = () => {
-    console.log('olá');
-    combinedFilter.forEach(({ comparison, column, value }) => {
-      switch (comparison) {
-      case 'maior que':
-        dataFilters = dataFilters
-          .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
-        break;
-      case 'menor que':
-        dataFilters = dataFilters
-          .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
-        break;
-      case 'igual a':
-        dataFilters = dataFilters
-          .filter((planet) => planet[column] === value);
-        break;
-      default:
-        return dataFilters;
-      }
-    });
-    console.log(dataFilters);
-    return dataFilters;
-  };
+  useEffect(() => {
+    let dataFilters = [...nameFilter];
+    const valueFilters = () => {
+      console.log(dataFilters);
+      filterNumericInput.forEach(({ comparison, column, value }) => {
+        switch (comparison) {
+        case 'maior que':
+          dataFilters = dataFilters
+            .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
+          break;
+        case 'menor que':
+          dataFilters = dataFilters
+            .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
+          break;
+        case 'igual a':
+          dataFilters = dataFilters
+            .filter((planet) => planet[column] === value);
+          break;
+        default:
+          return dataFilters;
+        }
+      });
+      console.log(dataFilters);
+      return dataFilters;
+    };
+    valueFilters();
+  }, []);
 
   const handleSubmit = () => {
-    setfilterNumericInput({
+    setfilterNumericInput([
       ...filterNumericInput,
-    });
-    valueFilters();
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: 0,
+      },
+    ]);
   };
 
   return (
@@ -67,31 +72,31 @@ function Inputs() {
         type="text"
         name="column"
         id="column"
-        value={ filterNumericInput.column }
-        onChange={ handleChangeNumeric }
+        value={ columnFilter }
+        onChange={ (e) => setColumnFilter(e.target.value) }
       >
         <option
-          value={ filterNumericInput.column.population }
+          value="population"
         >
           population
         </option>
         <option
-          value={ filterNumericInput.column.orbital_period }
+          value="orbital_period"
         >
           orbital_period
         </option>
         <option
-          value={ filterNumericInput.column.diameter }
+          value="diameter"
         >
           diameter
         </option>
         <option
-          value={ filterNumericInput.column.rotation_period }
+          value="rotation_period"
         >
           rotation_period
         </option>
         <option
-          value={ filterNumericInput.column.surface_water }
+          value="surface_water"
         >
           surface_water
         </option>
@@ -100,8 +105,8 @@ function Inputs() {
         className="comparison"
         data-testid="comparison-filter"
         name="comparison"
-        value={ filterNumericInput.comparison }
-        onChange={ handleChangeNumeric }
+        value={ comparisonFilter }
+        onChange={ (e) => setComparisonFilter(e.target.value) }
       >
         Operador
         { comparisonOptions.map((option) => (
@@ -113,8 +118,8 @@ function Inputs() {
         data-testid="value-filter"
         type="number"
         name="value"
-        value={ filterNumericInput.value }
-        onChange={ handleChangeNumeric }
+        value={ valueFilter }
+        onChange={ (e) => setValueFilter(e.target.value) }
       />
       <button
         type="submit"
@@ -123,9 +128,6 @@ function Inputs() {
       >
         Filtrar
       </button>
-      <span className="span-message">
-        { filterNumericInput.column }
-      </span>
     </div>
   );
 }
