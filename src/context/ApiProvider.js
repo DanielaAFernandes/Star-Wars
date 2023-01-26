@@ -4,12 +4,12 @@ import ApiContext from './ApiContext';
 
 export default function ApiProvider({ children }) {
   const [apiData, setApiData] = useState([]);
-  // const [queryData, setQueryData] = useState([]);
-  const [filterNumericInput, setfilterNumericInput] = useState([{
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [filterNumericInput, setfilterNumericInput] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
-  }]);
+  });
   const [filter, setFilter] = useState({
     filters: {
       textFilter: { name: '' },
@@ -17,18 +17,21 @@ export default function ApiProvider({ children }) {
     },
   });
 
+  const [emptyArray, setEmptyArray] = useState([]);
+
   useEffect(() => {
     const fetchApi = async () => {
       const response = await fetch('https://swapi.dev/api/planets');
       const data = await response.json();
       setApiData(data.results);
+      setFilteredPlanets(data.results);
     };
     fetchApi();
   }, []);
 
-  apiData.forEach((planet) => delete planet.residents);
+  filteredPlanets.forEach((planet) => delete planet.residents);
   const nameTyped = filter.filters.textFilter;
-  const nameFilter = apiData.filter((p) => p.name.includes(nameTyped.name));
+  const nameFilter = filteredPlanets.filter((p) => p.name.includes(nameTyped.name));
 
   const handleChange = ({ target: { name, value } }) => {
     setFilter({
@@ -40,19 +43,11 @@ export default function ApiProvider({ children }) {
     });
   };
 
-  // const handleChangeNumeric = ({ target: { name, value } }) => {
-  //   setfilterNumericInput({
-  //     ...filterNumericInput,
-  //     [name]: value,
-  //   });
-  // };
-
   return (
     <ApiContext.Provider
       value={ {
         apiData,
         setApiData,
-        // setTextFilter,
         filterNumericInput,
         setfilterNumericInput,
         handleChange,
@@ -60,6 +55,10 @@ export default function ApiProvider({ children }) {
         filter,
         nameTyped,
         nameFilter,
+        emptyArray,
+        setEmptyArray,
+        filteredPlanets,
+        setFilteredPlanets,
       } }
     >
       { children }

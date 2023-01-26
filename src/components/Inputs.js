@@ -1,13 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ApiContext from '../context/ApiContext';
 
 function Inputs() {
   const { handleChange,
     filterNumericInput, nameFilter, nameTyped,
-    setfilterNumericInput } = useContext(ApiContext);
-  const [comparisonFilter, setComparisonFilter] = useState('maior que');
-  const [columnFilter, setColumnFilter] = useState('population');
-  const [valueFilter, setValueFilter] = useState(0);
+    setfilterNumericInput, emptyArray, setEmptyArray,
+    setFilteredPlanets } = useContext(ApiContext);
+  // const [comparisonFilter, setComparisonFilter] = useState('maior que');
+  // const [columnFilter, setColumnFilter] = useState('population');
+  // const [valueFilter, setValueFilter] = useState(0);
 
   const comparisonOptions = [
     { name: 'maior que', value: 'maior que' },
@@ -17,9 +18,10 @@ function Inputs() {
 
   useEffect(() => {
     let dataFilters = [...nameFilter];
+    console.log(filterNumericInput);
+    console.log(emptyArray);
     const valueFilters = () => {
-      console.log(dataFilters);
-      filterNumericInput.forEach(({ comparison, column, value }) => {
+      emptyArray.forEach(({ comparison, column, value }) => {
         switch (comparison) {
         case 'maior que':
           dataFilters = dataFilters
@@ -38,20 +40,21 @@ function Inputs() {
         }
       });
       console.log(dataFilters);
-      return dataFilters;
+      setFilteredPlanets(dataFilters);
     };
     valueFilters();
-  }, []);
+  }, [filterNumericInput]);
 
   const handleSubmit = () => {
-    setfilterNumericInput([
-      ...filterNumericInput,
+    console.log('oi');
+    setEmptyArray([...emptyArray, filterNumericInput]);
+    setfilterNumericInput(
       {
         column: 'population',
         comparison: 'maior que',
         value: 0,
       },
-    ]);
+    );
   };
 
   return (
@@ -72,8 +75,9 @@ function Inputs() {
         type="text"
         name="column"
         id="column"
-        value={ columnFilter }
-        onChange={ (e) => setColumnFilter(e.target.value) }
+        value={ filterNumericInput.column }
+        onChange={ (e) => setfilterNumericInput({ ...filterNumericInput,
+          column: e.target.value }) }
       >
         <option
           value="population"
@@ -105,8 +109,9 @@ function Inputs() {
         className="comparison"
         data-testid="comparison-filter"
         name="comparison"
-        value={ comparisonFilter }
-        onChange={ (e) => setComparisonFilter(e.target.value) }
+        value={ filterNumericInput.comparison }
+        onChange={ (e) => setfilterNumericInput({ ...filterNumericInput,
+          comparison: e.target.value }) }
       >
         Operador
         { comparisonOptions.map((option) => (
@@ -118,8 +123,9 @@ function Inputs() {
         data-testid="value-filter"
         type="number"
         name="value"
-        value={ valueFilter }
-        onChange={ (e) => setValueFilter(e.target.value) }
+        value={ filterNumericInput.value }
+        onChange={ (e) => setfilterNumericInput({ ...filterNumericInput,
+          value: e.target.value }) }
       />
       <button
         type="submit"
