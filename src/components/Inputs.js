@@ -16,6 +16,14 @@ function Inputs() {
     { name: 'igual a', value: 'igual a' },
   ];
 
+  const columnOptions = [
+    { name: 'population', value: 'population' },
+    { name: 'orbital_period', value: 'orbital_period' },
+    { name: 'diameter', value: 'diameter' },
+    { name: 'rotation_period', value: 'rotation_period' },
+    { name: 'surface_water', value: 'surface_water' },
+  ];
+
   useEffect(() => {
     let dataFilters = [...nameFilter];
     console.log(filterNumericInput);
@@ -57,6 +65,18 @@ function Inputs() {
     );
   };
 
+  const handleChangeColumn = (e) => {
+    setfilterNumericInput(
+      {
+        ...filterNumericInput,
+        column: e.target.value,
+      },
+    );
+    if (column === e.target.value) {
+      column.remove();
+    }
+  };
+
   return (
     <div>
       <input
@@ -76,34 +96,12 @@ function Inputs() {
         name="column"
         id="column"
         value={ filterNumericInput.column }
-        onChange={ (e) => setfilterNumericInput({ ...filterNumericInput,
-          column: e.target.value }) }
+        onChange={ (e) => handleChangeColumn(e) }
       >
-        <option
-          value="population"
-        >
-          population
-        </option>
-        <option
-          value="orbital_period"
-        >
-          orbital_period
-        </option>
-        <option
-          value="diameter"
-        >
-          diameter
-        </option>
-        <option
-          value="rotation_period"
-        >
-          rotation_period
-        </option>
-        <option
-          value="surface_water"
-        >
-          surface_water
-        </option>
+        Coluna
+        { columnOptions.map((option) => (
+          <option key={ option.value } value={ option.value }>{ option.name}</option>
+        ))}
       </select>
       <select
         className="comparison"

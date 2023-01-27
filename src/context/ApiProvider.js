@@ -18,6 +18,7 @@ export default function ApiProvider({ children }) {
   });
 
   const [emptyArray, setEmptyArray] = useState([]);
+  const [usedSelectedOption, setUsedSelectedOption] = useState([]);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -59,6 +60,8 @@ export default function ApiProvider({ children }) {
         setEmptyArray,
         filteredPlanets,
         setFilteredPlanets,
+        usedSelectedOption,
+        setUsedSelectedOption,
       } }
     >
       { children }

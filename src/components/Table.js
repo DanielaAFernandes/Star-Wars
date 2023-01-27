@@ -5,7 +5,7 @@ function Table() {
   const { nameFilter } = useContext(ApiContext);
   const tableData = nameFilter.map((planet) => (
     <tr key={ planet.name } className="planets-data">
-      <td>{ planet.name }</td>
+      <td data-testid="planet-name">{ planet.name }</td>
       <td>{ planet.rotation_period }</td>
       <td>{ planet.orbital_period }</td>
       <td>{ planet.diameter }</td>
