@@ -18,7 +18,13 @@ export default function ApiProvider({ children }) {
   });
 
   const [emptyArray, setEmptyArray] = useState([]);
-  const [usedSelectedOption, setUsedSelectedOption] = useState([]);
+  const [selectedOption, setSelectedOption] = useState([
+    { name: 'population', value: 'population' },
+    { name: 'orbital_period', value: 'orbital_period' },
+    { name: 'diameter', value: 'diameter' },
+    { name: 'rotation_period', value: 'rotation_period' },
+    { name: 'surface_water', value: 'surface_water' },
+  ]);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -60,8 +66,8 @@ export default function ApiProvider({ children }) {
         setEmptyArray,
         filteredPlanets,
         setFilteredPlanets,
-        usedSelectedOption,
-        setUsedSelectedOption,
+        selectedOption,
+        setSelectedOption,
       } }
     >
       { children }

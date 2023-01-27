@@ -5,10 +5,8 @@ function Inputs() {
   const { handleChange,
     filterNumericInput, nameFilter, nameTyped,
     setfilterNumericInput, emptyArray, setEmptyArray,
-    setFilteredPlanets } = useContext(ApiContext);
-  // const [comparisonFilter, setComparisonFilter] = useState('maior que');
-  // const [columnFilter, setColumnFilter] = useState('population');
-  // const [valueFilter, setValueFilter] = useState(0);
+    setFilteredPlanets, selectedOption,
+    setSelectedOption } = useContext(ApiContext);
 
   const comparisonOptions = [
     { name: 'maior que', value: 'maior que' },
@@ -26,8 +24,6 @@ function Inputs() {
 
   useEffect(() => {
     let dataFilters = [...nameFilter];
-    console.log(filterNumericInput);
-    console.log(emptyArray);
     const valueFilters = () => {
       emptyArray.forEach(({ comparison, column, value }) => {
         switch (comparison) {
@@ -47,15 +43,13 @@ function Inputs() {
           return dataFilters;
         }
       });
-      console.log(dataFilters);
       setFilteredPlanets(dataFilters);
     };
     valueFilters();
   }, [filterNumericInput]);
 
   const handleSubmit = () => {
-    console.log('oi');
-    setEmptyArray([...emptyArray, filterNumericInput]);
+    setEmptyArray([...emptyArray, filterNumericInput, ...selectedOption]);
     setfilterNumericInput(
       {
         column: 'population',
@@ -63,6 +57,10 @@ function Inputs() {
         value: 0,
       },
     );
+    const newOptions = columnOptions
+      .filter((selected) => selected.value !== filterNumericInput.column);
+    console.log(newOptions);
+    setSelectedOption(newOptions);
   };
 
   const handleChangeColumn = (e) => {
@@ -72,9 +70,6 @@ function Inputs() {
         column: e.target.value,
       },
     );
-    if (column === e.target.value) {
-      column.remove();
-    }
   };
 
   return (
@@ -99,7 +94,7 @@ function Inputs() {
         onChange={ (e) => handleChangeColumn(e) }
       >
         Coluna
-        { columnOptions.map((option) => (
+        { selectedOption.map((option) => (
           <option key={ option.value } value={ option.value }>{ option.name}</option>
         ))}
       </select>
