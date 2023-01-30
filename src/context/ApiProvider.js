@@ -5,11 +5,19 @@ import ApiContext from './ApiContext';
 export default function ApiProvider({ children }) {
   const [apiData, setApiData] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [showFilters, setShowFilters] = useState([]);
   const [filterNumericInput, setfilterNumericInput] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
+  const [columnOptions, setColumnOptions] = useState([
+    { name: 'population', value: 'population' },
+    { name: 'orbital_period', value: 'orbital_period' },
+    { name: 'diameter', value: 'diameter' },
+    { name: 'rotation_period', value: 'rotation_period' },
+    { name: 'surface_water', value: 'surface_water' },
+  ]);
   const [filter, setFilter] = useState({
     filters: {
       textFilter: { name: '' },
@@ -18,13 +26,13 @@ export default function ApiProvider({ children }) {
   });
 
   const [emptyArray, setEmptyArray] = useState([]);
-  const [selectedOption, setSelectedOption] = useState([
-    { name: 'population', value: 'population' },
-    { name: 'orbital_period', value: 'orbital_period' },
-    { name: 'diameter', value: 'diameter' },
-    { name: 'rotation_period', value: 'rotation_period' },
-    { name: 'surface_water', value: 'surface_water' },
-  ]);
+  // const [selectedOption, setSelectedOption] = useState([
+  //   { name: 'population', value: 'population' },
+  //   { name: 'orbital_period', value: 'orbital_period' },
+  //   { name: 'diameter', value: 'diameter' },
+  //   { name: 'rotation_period', value: 'rotation_period' },
+  //   { name: 'surface_water', value: 'surface_water' },
+  // ]);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -38,7 +46,8 @@ export default function ApiProvider({ children }) {
 
   filteredPlanets.forEach((planet) => delete planet.residents);
   const nameTyped = filter.filters.textFilter;
-  const nameFilter = filteredPlanets.filter((p) => p.name.includes(nameTyped.name));
+  const nameFilter = filteredPlanets
+    .filter((p) => p.name.includes(nameTyped.name));
 
   const handleChange = ({ target: { name, value } }) => {
     setFilter({
@@ -66,8 +75,12 @@ export default function ApiProvider({ children }) {
         setEmptyArray,
         filteredPlanets,
         setFilteredPlanets,
-        selectedOption,
-        setSelectedOption,
+        // selectedOption,
+        // setSelectedOption,
+        showFilters,
+        setShowFilters,
+        columnOptions,
+        setColumnOptions,
       } }
     >
       { children }

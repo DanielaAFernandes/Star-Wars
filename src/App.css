@@ -1,42 +1,98 @@
+.asc-radio {
+  color: white;
+  margin-left: 7px;
+}
+
 body {
   background-color: rgb(4, 4, 66);
 }
 
-.column-filter {
+.button {
   background-color: orangered;
   color: white;
   font-size: 15px;
+  font-weight: 800;
+  margin-right: 10px;
+}
+
+.column-filter {
+  background-color: rgb(255, 230, 0);
+  color: black;
+  font-size: 15px;
+  font-weight: 800;
+  margin-left: 30px;
   margin-right: 5px;
 }
 
-.comparison {
-  background-color: orangered;
-  color: white;
+.column-sort {
+  background-color: rgb(255, 217, 0);
+  color: black;
   font-size: 15px;
+  font-weight: 800;
+  margin-left: 20px;
+}
+
+.comparison {
+  background-color: rgb(255, 230, 0);
+  color: black;
+  font-size: 15px;
+  font-weight: 800;
   margin-right: 5px;
+}
+
+.created {
+  font-size: 10px;
+  word-break: break-all;
+}
+
+.desc-radio {
+  color: white;
+  margin-left: 7px;
+  margin-right: 7px;
+}
+
+.edited {
+  font-size: 10px;
+  word-break: break-all;
 }
 
 .films {
   font-size: 10px;
+  word-break: break-all;
+}
+
+.filters {
+  margin-top: 25px;
+}
+
+.filtersScreen {
+  color: white;
+  font-size: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .header {
-  background-color: rgba(97, 17, 167, 0.493);
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Carina_Dwarf_Galaxy.jpg/2456px-Carina_Dwarf_Galaxy.jpg);
   display: flex;
   justify-content: center;
+  height: 100px;
   padding-bottom: 10px;
   padding-top: 10px;
   text-align: center;
+  width: 1915px;
 }
 
 .name-filter {
   border: 3px orangered solid;
+  margin-left: 12px;
 }
 
 .number-input {
-  background-color: orangered;
-  color: white;
+  background-color: rgb(255, 230, 0);
+  color: black;
   font-size: 15px;
+  font-weight: 800;
   margin-right: 5px;
   width: 50px;
 }
@@ -45,6 +101,12 @@ body {
   font-size: 15px;
   text-align: center;
 }
+
+/* .remove-filter {
+  font-size: 10px;
+  margin-right: 10px;
+  width: 50px;
+} */
 
 .span-message {
   background-color: aliceblue;
@@ -55,14 +117,30 @@ body {
 .table-edit {
   color: white;
   font-size: 25px;
+  margin-top: 15px;
 }
 
 .table-items {
-  padding-left: 15px;
+  padding-left: 10px;
+  padding-right: 32px;
 }
 
 .title {
-  color: aliceblue;
+  background-color: black;
+  border: 1px solid orangered;
+  color: rgb(255, 230, 0);
+  font-family: fantasy;
   font-size: 50px;
-  text-align: center;
+  margin-bottom: 10px;
+  margin-right: 120px;
+  margin-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 7px;
 }
+
+.url {
+  font-size: 10px;
+  word-break: break-all;
+}
+

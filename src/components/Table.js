@@ -15,9 +15,9 @@ function Table() {
       <td>{ planet.surface_water }</td>
       <td>{ planet.population }</td>
       <td className="films">{ planet.films }</td>
-      <td>{ planet.created }</td>
-      <td>{ planet.edited }</td>
-      <td>{ planet.url}</td>
+      <td className="created">{ planet.created }</td>
+      <td className="edited">{ planet.edited }</td>
+      <td className="url">{ planet.url}</td>
     </tr>
   ));
 

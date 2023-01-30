@@ -3,10 +3,10 @@ import ApiContext from '../context/ApiContext';
 
 function Inputs() {
   const { handleChange,
-    filterNumericInput, nameFilter, nameTyped,
+    filterNumericInput, nameTyped,
     setfilterNumericInput, emptyArray, setEmptyArray,
-    setFilteredPlanets, selectedOption,
-    setSelectedOption } = useContext(ApiContext);
+    setFilteredPlanets, showFilters, setShowFilters,
+    columnOptions, setColumnOptions, apiData } = useContext(ApiContext);
 
   const comparisonOptions = [
     { name: 'maior que', value: 'maior que' },
@@ -14,7 +14,7 @@ function Inputs() {
     { name: 'igual a', value: 'igual a' },
   ];
 
-  const columnOptions = [
+  const initialOptions = [
     { name: 'population', value: 'population' },
     { name: 'orbital_period', value: 'orbital_period' },
     { name: 'diameter', value: 'diameter' },
@@ -23,7 +23,11 @@ function Inputs() {
   ];
 
   useEffect(() => {
-    let dataFilters = [...nameFilter];
+    let dataFilters = [...apiData];
+    if (emptyArray.length === 0) {
+      return setFilteredPlanets(apiData);
+    }
+
     const valueFilters = () => {
       emptyArray.forEach(({ comparison, column, value }) => {
         switch (comparison) {
@@ -46,21 +50,65 @@ function Inputs() {
       setFilteredPlanets(dataFilters);
     };
     valueFilters();
-  }, [filterNumericInput]);
+  }, [emptyArray, apiData, setFilteredPlanets, filterNumericInput]);
 
   const handleSubmit = () => {
-    setEmptyArray([...emptyArray, filterNumericInput, ...selectedOption]);
+    setEmptyArray([...emptyArray, filterNumericInput]);
+    const newOptions = columnOptions
+      .filter((selected) => selected.value !== filterNumericInput.column);
+    setColumnOptions(newOptions);
     setfilterNumericInput(
       {
-        column: 'population',
+        column: newOptions[0].value,
         comparison: 'maior que',
         value: 0,
       },
     );
-    const newOptions = columnOptions
-      .filter((selected) => selected.value !== filterNumericInput.column);
-    console.log(newOptions);
-    setSelectedOption(newOptions);
+
+    const newArray = Object.values(filterNumericInput);
+    const filters = `${newArray[0]} ${newArray[1]} ${newArray[2]}`;
+    const showFilterOnScreen = [];
+    showFilterOnScreen.push(filters);
+    setShowFilters([...showFilters, showFilterOnScreen]);
+  };
+
+  const removeItem = (deleteIndex) => {
+    console.log(showFilters);
+    const removedItem = showFilters
+      .filter((_, index) => deleteIndex !== index);
+    const removeFilters = emptyArray
+      .filter((_, index) => deleteIndex !== index);
+    console.log(emptyArray);
+    setShowFilters(removedItem);
+    const columnIsolated = showFilters[deleteIndex][0].split(' ')[0];
+    // const comparisonIsolated1 = showFilters[deleteIndex][0].split(' ')[1];
+    // const comparisonIsolated2 = showFilters[deleteIndex][0].split(' ')[2];
+    // const comparisonIsolated = `${comparisonIsolated1} ${comparisonIsolated2}`;
+    // const valueIsolated = showFilters[deleteIndex][0].split(' ')[3];
+
+    setColumnOptions([...columnOptions, { value: columnIsolated, name: columnIsolated }]);
+    setfilterNumericInput(
+      {
+        column: columnIsolated,
+        comparison: 'maior que',
+        value: 0,
+      },
+    );
+
+    setEmptyArray(removeFilters);
+
+    // setEmptyArray([{
+    //   column: columnIsolated,
+    //   comparison: comparisonIsolated,
+    //   value: valueIsolated,
+    // }]);
+    console.log(emptyArray);
+  };
+
+  const removeFilters = () => {
+    setShowFilters([]);
+    setColumnOptions(initialOptions);
+    setFilteredPlanets(apiData);
   };
 
   const handleChangeColumn = (e) => {
@@ -94,7 +142,7 @@ function Inputs() {
         onChange={ (e) => handleChangeColumn(e) }
       >
         Coluna
-        { selectedOption.map((option) => (
+        { columnOptions.map((option) => (
           <option key={ option.value } value={ option.value }>{ option.name}</option>
         ))}
       </select>
@@ -127,6 +175,28 @@ function Inputs() {
       >
         Filtrar
       </button>
+      <button
+        type="submit"
+        data-testid="button-remove-filters"
+        onClick={ removeFilters }
+      >
+        Remover todos os filtros
+      </button>
+      <ul className="filtersScreen">
+        {showFilters.map((filter, index) => (
+          <li data-testid="filter" key={ index }>
+            <p>
+              {filter}
+            </p>
+            <button
+              type="submit"
+              onClick={ () => removeItem(index) }
+            >
+              X
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

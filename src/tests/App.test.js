@@ -271,8 +271,10 @@ test('if the filter column has data-testid="column-filter" and has the option "p
         { name: /filtrar/i },
       );
       expect(filterButton).toBeInTheDocument();
+    act(() => {
       userEvent.selectOptions(testColumnId, ["population"]);
       userEvent.click(filterButton);
+    });
   });
 
   test('if the filter comparison has data-testid="comparison-filter" and has the option "maior que"', () => {
@@ -284,6 +286,10 @@ test('if the filter column has data-testid="column-filter" and has the option "p
         { name: /filtrar/i },
       );
       expect(filterButton).toBeInTheDocument();
+    act(() => {
+      userEvent.selectOptions(testComparisonId, ["maior que"]);
+      userEvent.click(filterButton);
+    });
       userEvent.selectOptions(testComparisonId, ["maior que"]);
       userEvent.click(filterButton);
   });
@@ -297,6 +303,10 @@ test('if the filter column has data-testid="column-filter" and has the option "p
         { name: /filtrar/i },
       );
       expect(filterButton).toBeInTheDocument();
+    act(() => {
+      userEvent.type(testValueId, [0]);
+      userEvent.click(filterButton);
+    });
       userEvent.type(testValueId, [0]);
       userEvent.click(filterButton);
   });
@@ -324,7 +334,9 @@ test('if the app has a button to filter', () => {
   );
   expect(filterButton).toBeInTheDocument();
 //   userEvent.selectOptions(column, ["population"]);
-  userEvent.click(filterButton);
+    act(() => {
+        userEvent.click(filterButton);
+    });
 });
 
 test('the name filter', async () => {
@@ -333,8 +345,8 @@ test('the name filter', async () => {
     act(() => {
         userEvent.type(filterNameInput, "t");
       });
-      const planets = await screen.findAllByTestId('planet-name');
-      expect(planets).toHaveLength(3);
+    const planets = await screen.findAllByTestId('planet-name');
+    expect(planets).toHaveLength(3);
 });
 
 test('if the filters can be applied', async () => {
@@ -344,17 +356,19 @@ test('if the filters can be applied', async () => {
     const comparison = screen.getByTestId("comparison-filter");
     const value = screen.getByTestId("value-filter");
     const btn = screen.getByTestId("button-filter");
+    act(() => {
+      userEvent.selectOptions(column, "orbital_period");
+      userEvent.selectOptions(comparison, 'igual a');
+      userEvent.type(value, '304'); 
+    });
 
-    userEvent.selectOptions(column, "orbital_period");
-    userEvent.selectOptions(comparison, 'igual a');
-    userEvent.type(value, '304');
     expect(column).toHaveValue('orbital_period')
     expect(comparison).toHaveValue('igual a')
     expect(value).toHaveValue(304)
     userEvent.click(btn);
     
-    // await waitFor (() => expect(fetch).toHaveBeenCalled());
-    // expect( await screen.findAllByTestId("planet-name")).toHaveLength(10);
+    await waitFor (() => expect(fetch).toHaveBeenCalled());
+    expect( await screen.findAllByTestId("planet-name")).toHaveLength(10);
 });
 })
 
