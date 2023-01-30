@@ -73,10 +73,10 @@ body {
 }
 
 .header {
-  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Carina_Dwarf_Galaxy.jpg/2456px-Carina_Dwarf_Galaxy.jpg);
+  background-image: "url(https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Carina_Dwarf_Galaxy.jpg/2456px-Carina_Dwarf_Galaxy.jpg)";
   display: flex;
-  justify-content: center;
   height: 100px;
+  justify-content: center;
   padding-bottom: 10px;
   padding-top: 10px;
   text-align: center;
